@@ -9,28 +9,28 @@ const PROJECTS = [
     url: "https://www.upwardbr.com",
     tech: ["Next.js", "React", "CSS"],
     desc: "Institutional website for an American company — from layout to launch.",
-    image: "/projects/upwardbr.jpg",
+    image: "/projects/upwardbr.png",
   },
   {
     name: "Oakridge",
     url: "https://oakridge-wheat.vercel.app/",
     tech: ["Next.js", "React", "Tailwind"],
     desc: "Full website built and deployed from scratch.",
-    image: "/projects/oakridge.jpg",
+    image: "/projects/oakridge.png",
   },
   {
     name: "Smart Floor Services",
     url: "https://www.smartfloorservices.com/en",
     tech: ["Web", "Design", "UI/UX"],
     desc: "Institutional website for a floor services company.",
-    image: "/projects/smartfloor.jpg",
+    image: "/projects/smartfloor.png",
   },
   {
     name: "TitanFit",
     url: "https://titanfit-lilac.vercel.app/",
     tech: ["Next.js", "React", "Tailwind"],
     desc: "Fitness brand website built and deployed from scratch.",
-    image: "/projects/titanfit.jpg",
+    image: "/projects/titanfit.png",
   },
 ];
 
@@ -92,6 +92,7 @@ export default function WebDevSection() {
     </section>
   );
 }
+
 
 
 
