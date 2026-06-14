@@ -89,7 +89,8 @@ export default function ParticleCanvas() {
           if (d < MAX_DIST) {
             const alpha = (1 - d / MAX_DIST) * 0.35;
             // Line color blends between the two particle colors
-            const lineColor = p.color === q.color ? p.color : "#e8e8e8";
+            const neutral = document.documentElement.classList.contains("light") ? "#55554a" : "#e8e8e8";
+            const lineColor = p.color === q.color ? p.color : neutral;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(q.x, q.y);

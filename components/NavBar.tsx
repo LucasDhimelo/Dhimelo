@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 const LINKS = [
   { label: "About", href: "#sobre" },
@@ -40,9 +41,9 @@ export default function NavBar() {
             left: 0,
             right: 0,
             zIndex: 1000,
-            background: "rgba(6,6,8,0.92)",
+            background: "var(--nav-bg)",
             backdropFilter: "blur(14px)",
-            borderBottom: "1px solid #1a1a22",
+            borderBottom: "1px solid var(--border)",
           }}
         >
           <div
@@ -63,7 +64,7 @@ export default function NavBar() {
                 fontWeight: 700,
                 fontSize: "1.15rem",
                 letterSpacing: "-0.05em",
-                color: "#e8e8e8",
+                color: "var(--fg)",
                 textDecoration: "none",
               }}
             >
@@ -79,49 +80,53 @@ export default function NavBar() {
                   style={{
                     fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                     fontSize: "0.72rem",
-                    color: "#c8c8d0",
+                    color: "var(--fg-muted)",
                     textDecoration: "none",
                     letterSpacing: "0.06em",
                     transition: "color 150ms",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#FCF00A")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#c8c8d0")}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-text)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
                 >
                   {l.label}
                 </a>
               ))}
+              <ThemeToggle />
             </nav>
 
-            {/* Hamburger */}
-            <button
-              className="nav-mobile-btn"
-              onClick={() => setMenuOpen((o) => !o)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              style={{
-                background: "none",
-                border: "none",
-                padding: "4px",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              {([0, 1, 2] as const).map((i) => (
-                <span
-                  key={i}
-                  style={{
-                    display: "block",
-                    width: 22,
-                    height: 1,
-                    background: "#e8e8e8",
-                    transition: "transform 200ms, opacity 150ms",
-                    ...(menuOpen && i === 0 ? { transform: "rotate(45deg) translate(5px, 5px)" } : {}),
-                    ...(menuOpen && i === 1 ? { opacity: 0 } : {}),
-                    ...(menuOpen && i === 2 ? { transform: "rotate(-45deg) translate(5px, -5px)" } : {}),
-                  }}
-                />
-              ))}
-            </button>
+            {/* Mobile: theme toggle + hamburger */}
+            <div className="nav-mobile-btn" style={{ alignItems: "center", gap: "1rem" }}>
+              <ThemeToggle />
+              <button
+                onClick={() => setMenuOpen((o) => !o)}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: "4px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                {([0, 1, 2] as const).map((i) => (
+                  <span
+                    key={i}
+                    style={{
+                      display: "block",
+                      width: 22,
+                      height: 1,
+                      background: "var(--fg)",
+                      transition: "transform 200ms, opacity 150ms",
+                      ...(menuOpen && i === 0 ? { transform: "rotate(45deg) translate(5px, 5px)" } : {}),
+                      ...(menuOpen && i === 1 ? { opacity: 0 } : {}),
+                      ...(menuOpen && i === 2 ? { transform: "rotate(-45deg) translate(5px, -5px)" } : {}),
+                    }}
+                  />
+                ))}
+              </button>
+            </div>
           </div>
 
           {/* Mobile dropdown */}
@@ -132,7 +137,7 @@ export default function NavBar() {
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.18 }}
-                style={{ overflow: "hidden", borderTop: "1px solid #1a1a22" }}
+                style={{ overflow: "hidden", borderTop: "1px solid var(--border)" }}
               >
                 <nav
                   aria-label="Navegação mobile"
@@ -151,7 +156,7 @@ export default function NavBar() {
                       style={{
                         fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                         fontSize: "0.875rem",
-                        color: "#e8e8e8",
+                        color: "var(--fg)",
                         textDecoration: "none",
                         letterSpacing: "0.04em",
                       }}

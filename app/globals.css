@@ -1,14 +1,59 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
+
+/* ─── Theme tokens — dark is the default ──────────────── */
+:root {
+  --bg: #060608;
+  --bg-alt: #050508;
+  --surface: #0e0e12;
+  --surface-deep: #08080c;
+  --border: #1a1a22;
+  --border-soft: #111114;
+  --border-strong: #2e2e3a;
+  --fg: #e8e8e8;
+  --fg-muted: #c8c8d0;
+  --fg-faint: #55556a;
+  --accent: #FCF00A;
+  --accent-text: #FCF00A;
+  --accent-soft: rgba(252, 240, 10, 0.3);
+  --nav-bg: rgba(6, 6, 8, 0.92);
+  --outline-stroke: rgba(232, 232, 232, 0.35);
+  --ghost-stroke: rgba(252, 240, 10, 0.06);
+  --grid-major: rgba(252, 240, 10, 0.055);
+  --grid-minor: rgba(232, 232, 232, 0.022);
+  --grid-fade: rgba(6, 6, 8, 0.85);
+}
+
+html.light {
+  --bg: #f5f4ef;
+  --bg-alt: #eeede6;
+  --surface: #ffffff;
+  --surface-deep: #e7e6df;
+  --border: #d8d7cd;
+  --border-soft: #e1e0d8;
+  --border-strong: #bcbbb0;
+  --fg: #141416;
+  --fg-muted: #45454e;
+  --fg-faint: #8a8a92;
+  --accent: #ecd905;
+  --accent-text: #6e6700;
+  --accent-soft: rgba(110, 103, 0, 0.35);
+  --nav-bg: rgba(245, 244, 239, 0.92);
+  --outline-stroke: rgba(20, 20, 22, 0.35);
+  --ghost-stroke: rgba(110, 103, 0, 0.12);
+  --grid-major: rgba(110, 103, 0, 0.1);
+  --grid-minor: rgba(20, 20, 22, 0.05);
+  --grid-fade: rgba(245, 244, 239, 0.85);
+}
 
 @theme inline {
-  --color-background: #060608;
-  --color-foreground: #e8e8e8;
-  --color-surface: #0e0e12;
-  --color-border: #1a1a22;
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
   --color-accent: #FCF00A;
   --color-accent-dark: #c4ba00;
   --color-cyan: #00D4FF;
-  --color-muted: #555566;
+  --color-muted: var(--fg-faint);
   --font-heading: var(--font-space-grotesk);
   --font-body: var(--font-inter);
   --font-code: var(--font-jetbrains);
@@ -20,16 +65,23 @@
   padding: 0;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background-color: var(--bg); }
+
+/* ─── Lenis smooth scroll ─────────────────────────────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
 
 body {
-  background-color: #060608;
-  color: #e8e8e8;
+  background-color: var(--bg);
+  color: var(--fg);
   font-family: var(--font-inter), Inter, sans-serif;
   cursor: none;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 @media (pointer: coarse) {
@@ -39,7 +91,7 @@ body {
 
 a, button, [role="button"], input, textarea { cursor: none; }
 
-/* â”€â”€â”€ Noise overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Noise overlay ───────────────────────────────────── */
 .noise-overlay {
   position: fixed;
   inset: 0;
@@ -50,12 +102,20 @@ a, button, [role="button"], input, textarea { cursor: none; }
   background-repeat: repeat;
 }
 
-/* â”€â”€â”€ Global cyberpunk grid â€” fixed parallax â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+html.light .noise-overlay { opacity: 0.04; }
+
+/* ─── Global cyberpunk grid — fixed parallax ──────────── */
 .bg-grid {
   background-image:
-    linear-gradient(rgba(252,240,10,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(252,240,10,0.05) 1px, transparent 1px);
-  background-size: 64px 64px;
+    /* vignette — grid fades toward the edges */
+    radial-gradient(ellipse 110% 90% at 50% 45%, transparent 35%, var(--grid-fade) 100%),
+    /* major lines — accent, every 96px */
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    /* minor lines — faint, every 24px */
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-size: 100% 100%, 96px 96px, 96px 96px, 24px 24px, 24px 24px;
   background-attachment: fixed;
 }
 
@@ -63,7 +123,7 @@ a, button, [role="button"], input, textarea { cursor: none; }
   .bg-grid { background-attachment: scroll; }
 }
 
-/* â”€â”€â”€ Pulsing availability dot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Pulsing availability dot ────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.3; transform: scale(0.6); }
@@ -74,26 +134,26 @@ a, button, [role="button"], input, textarea { cursor: none; }
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #FCF00A;
+  background: var(--accent-text);
   animation: pulse-dot 1.8s ease-in-out infinite;
   vertical-align: middle;
   margin-right: 0.5rem;
 }
 
-/* â”€â”€â”€ Section padding â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Section padding ─────────────────────────────────── */
 .section-pad { padding: 6rem 1.5rem; }
 
 @media (min-width: 768px)  { .section-pad { padding: 8rem 3rem; } }
 @media (min-width: 1280px) { .section-pad { padding: 10rem 6rem; } }
 
-/* â”€â”€â”€ Container â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Container ───────────────────────────────────────── */
 .container-inner { max-width: 1280px; margin: 0 auto; }
 
-/* â”€â”€â”€ Section label â€” editorial number â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Section label — editorial number ────────────────── */
 .section-label {
   font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
   font-size: 0.6rem;
-  color: #FCF00A;
+  color: var(--accent-text);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   margin-bottom: 0.6rem;
@@ -107,32 +167,32 @@ a, button, [role="button"], input, textarea { cursor: none; }
   display: inline-block;
   width: 32px;
   height: 1px;
-  background: #FCF00A;
+  background: var(--accent-text);
   opacity: 0.4;
 }
 
-/* â”€â”€â”€ Section title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Section title ───────────────────────────────────── */
 .section-title {
   font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   font-weight: 700;
   font-size: clamp(2rem, 5vw, 3.25rem);
   letter-spacing: -0.04em;
-  color: #e8e8e8;
-  border-left: 3px solid #FCF00A;
+  color: var(--fg);
+  border-left: 3px solid var(--accent);
   padding-left: 1.25rem;
   line-height: 1.05;
   margin-bottom: 3rem;
 }
 
-/* â”€â”€â”€ Skill chip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Skill chip ──────────────────────────────────────── */
 .chip {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.8rem;
-  border: 1px solid #2e2e3a;
+  border: 1px solid var(--border-strong);
   font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
   font-size: 0.68rem;
-  color: #a8a8c4;
+  color: var(--fg-muted);
   background: transparent;
   transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
   letter-spacing: 0.03em;
@@ -140,17 +200,17 @@ a, button, [role="button"], input, textarea { cursor: none; }
 }
 
 .chip:hover {
-  border-color: #FCF00A;
-  color: #FCF00A;
-  background: rgba(252,240,10,0.05);
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+  background: color-mix(in srgb, var(--accent-text) 7%, transparent);
 }
 
-/* â”€â”€â”€ Form inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Form inputs ─────────────────────────────────────── */
 .input-line {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #1a1a22;
-  color: #e8e8e8;
+  border-bottom: 1px solid var(--border);
+  color: var(--fg);
   font-family: var(--font-inter), Inter, sans-serif;
   font-size: 0.95rem;
   padding: 0.875rem 0;
@@ -161,16 +221,16 @@ a, button, [role="button"], input, textarea { cursor: none; }
 }
 
 .input-line::placeholder {
-  color: #888899;
+  color: var(--fg-faint);
   font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.input-line:focus { border-bottom-color: #FCF00A; }
+.input-line:focus { border-bottom-color: var(--accent-text); }
 
-/* â”€â”€â”€ Nav responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Nav responsive ──────────────────────────────────── */
 .nav-desktop { display: flex; }
 .nav-mobile-btn { display: none; }
 
@@ -179,15 +239,15 @@ a, button, [role="button"], input, textarea { cursor: none; }
   .nav-mobile-btn { display: flex; }
 }
 
-/* â”€â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Scrollbar ───────────────────────────────────────── */
 ::-webkit-scrollbar { width: 2px; }
-::-webkit-scrollbar-track { background: #060608; }
-::-webkit-scrollbar-thumb { background: #FCF00A; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
 
-/* â”€â”€â”€ Selection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Selection ───────────────────────────────────────── */
 ::selection { background: #FCF00A; color: #060608; }
 
-/* â”€â”€â”€ About grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── About grid ──────────────────────────────────────── */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -199,7 +259,7 @@ a, button, [role="button"], input, textarea { cursor: none; }
   .about-grid { grid-template-columns: 280px 1fr; gap: 6rem; }
 }
 
-/* â”€â”€â”€ Contact grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Contact grid ────────────────────────────────────── */
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -211,14 +271,33 @@ a, button, [role="button"], input, textarea { cursor: none; }
   .contact-grid { grid-template-columns: 1fr 1fr; gap: 6rem; }
 }
 
-/* ─── Design gallery grid ─────────────────────────────── */
-.design-grid {
+/* ─── Design gallery — parallax columns ───────────────── */
+.design-cols {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  align-items: start;
 }
 
-@media (min-width: 768px) {
-  .design-grid { grid-template-columns: repeat(4, 1fr); }
+@media (min-width: 900px) {
+  .design-cols { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+
+/* ─── Web dev — stacking cards ────────────────────────── */
+.stack-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.stack-card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+@media (min-width: 900px) {
+  .stack-card-grid { grid-template-columns: 11fr 9fr; min-height: 460px; }
+  .stack-card-media { aspect-ratio: auto; }
+  .stack-card-content { border-top: none !important; border-left: 1px solid var(--border); }
 }
 
 /* ─── Footer grid ─────────────────────────────────────── */
@@ -233,5 +312,3 @@ a, button, [role="button"], input, textarea { cursor: none; }
 @media (min-width: 640px) {
   .footer-grid { flex-direction: row; justify-content: space-between; text-align: left; }
 }
-
-

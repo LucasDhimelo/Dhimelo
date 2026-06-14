@@ -1,7 +1,8 @@
 ﻿"use client";
 
 import Image from "next/image";
-import { motion, type Variants } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import CountUp from "./CountUp";
 
 const SKILLS = [
@@ -21,8 +22,17 @@ const container: Variants = {
 };
 
 export default function AboutSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  // Photo drifts slower than the page — subtle depth as the section scrolls by
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const photoY = useTransform(scrollYProgress, [0, 1], [48, -48]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+
   return (
-    <section id="sobre" className="section-pad bg-grid" style={{ backgroundColor: "#060608", borderTop: "1px solid #111" }}>
+    <section ref={sectionRef} id="sobre" className="section-pad bg-grid" style={{ backgroundColor: "var(--bg)", borderTop: "1px solid var(--border-soft)" }}>
       <div className="container-inner">
         <motion.div
           initial="hidden"
@@ -31,29 +41,31 @@ export default function AboutSection() {
           variants={container}
         >
           <div className="about-grid">
-            {/* Photo */}
-            <motion.div variants={fadeUp} style={{ position: "relative", width: "100%", maxWidth: 280 }}>
+            {/* Photo — parallax against the scroll */}
+            <motion.div variants={fadeUp} style={{ y: photoY, position: "relative", width: "100%", maxWidth: 280 }}>
               <div
                 style={{
                   position: "relative",
                   aspectRatio: "3/4",
-                  background: "#08080c",
+                  background: "var(--surface-deep)",
                   overflow: "hidden",
-                  border: "1px solid #1a1a1a",
+                  border: "1px solid var(--border)",
                 }}
               >
-                <Image
-                  src="/eu.png"
-                  alt="Photo of Dhimelo"
-                  fill
-                  sizes="(max-width: 768px) 80vw, 280px"
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    filter: "grayscale(15%) contrast(1.05)",
-                  }}
-                  priority
-                />
+                <motion.div style={{ y: imageY, position: "absolute", inset: "-8% 0", willChange: "transform" }}>
+                  <Image
+                    src="/eu.png"
+                    alt="Photo of Dhimelo"
+                    fill
+                    sizes="(max-width: 768px) 80vw, 280px"
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center top",
+                      filter: "grayscale(15%) contrast(1.05)",
+                    }}
+                    priority
+                  />
+                </motion.div>
                 {/* Red corner accent */}
                 <div
                   aria-hidden="true"
@@ -63,8 +75,8 @@ export default function AboutSection() {
                     left: 0,
                     width: 28,
                     height: 28,
-                    borderTop: "2px solid #FCF00A",
-                    borderLeft: "2px solid #FCF00A",
+                    borderTop: "2px solid var(--accent)",
+                    borderLeft: "2px solid var(--accent)",
                     pointerEvents: "none",
                   }}
                 />
@@ -76,8 +88,8 @@ export default function AboutSection() {
                     right: 0,
                     width: 28,
                     height: 28,
-                    borderBottom: "2px solid #FCF00A",
-                    borderRight: "2px solid #FCF00A",
+                    borderBottom: "2px solid var(--accent)",
+                    borderRight: "2px solid var(--accent)",
                     pointerEvents: "none",
                   }}
                 />
@@ -91,7 +103,7 @@ export default function AboutSection() {
                   right: -8,
                   width: "100%",
                   height: "100%",
-                  border: "1px solid #FCF00A",
+                  border: "1px solid var(--accent)",
                   opacity: 0.35,
                   pointerEvents: "none",
                   zIndex: -1,
@@ -108,7 +120,7 @@ export default function AboutSection() {
               <motion.h2 variants={fadeUp} className="section-title" style={{ marginBottom: "2rem" }}>
                 Who is
                 <br />
-                <span style={{ color: "#FCF00A" }}>Dhimelo</span>
+                <span style={{ color: "var(--accent-text)" }}>Dhimelo</span>
               </motion.h2>
 
               <motion.p
@@ -116,7 +128,7 @@ export default function AboutSection() {
                 style={{
                   fontFamily: "var(--font-inter), Inter, sans-serif",
                   fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
-                  color: "#c8c8d0",
+                  color: "var(--fg-muted)",
                   lineHeight: 1.85,
                   marginBottom: "1.1rem",
                   maxWidth: 500,
@@ -130,7 +142,7 @@ export default function AboutSection() {
                 style={{
                   fontFamily: "var(--font-inter), Inter, sans-serif",
                   fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
-                  color: "#c8c8d0",
+                  color: "var(--fg-muted)",
                   lineHeight: 1.85,
                   marginBottom: "2.5rem",
                   maxWidth: 500,
@@ -159,7 +171,7 @@ export default function AboutSection() {
               display: "grid",
               gridTemplateColumns: "repeat(3, 1fr)",
               gap: "1px",
-              background: "#FCF00A",
+              background: "var(--accent)",
               marginTop: "5rem",
             }}
           >
@@ -170,7 +182,7 @@ export default function AboutSection() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                style={{ padding: "2.5rem 1.75rem", background: "#060608", textAlign: "center" }}
+                style={{ padding: "2.5rem 1.75rem", background: "var(--bg)", textAlign: "center" }}
               >
                 <div
                   style={{
@@ -178,7 +190,7 @@ export default function AboutSection() {
                     fontWeight: 700,
                     fontSize: "clamp(2.25rem, 5vw, 3.25rem)",
                     letterSpacing: "-0.05em",
-                    color: "#e8e8e8",
+                    color: "var(--fg)",
                     lineHeight: 1,
                     marginBottom: "0.2rem",
                   }}
@@ -189,7 +201,7 @@ export default function AboutSection() {
                   style={{
                     fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                     fontSize: "0.6rem",
-                    color: "#FCF00A",
+                    color: "var(--accent-text)",
                     letterSpacing: "0.08em",
                     marginBottom: "0.15rem",
                   }}
@@ -200,7 +212,7 @@ export default function AboutSection() {
                   style={{
                     fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                     fontSize: "0.58rem",
-                    color: "#999aab",
+                    color: "var(--fg-faint)",
                     letterSpacing: "0.06em",
                   }}
                 >

@@ -1,7 +1,7 @@
 ﻿"use client";
 
-import { motion, type Variants } from "framer-motion";
-import { useState } from "react";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
+import { useRef, useState } from "react";
 const IconMail = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -43,9 +43,17 @@ const container: Variants = {
 
 export default function ContactSection() {
   const [sent, setSent] = useState(false);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  // Headline lines slide in opposite directions as the section scrolls through
+  const { scrollYProgress } = useScroll({
+    target: headlineRef,
+    offset: ["start end", "end start"],
+  });
+  const xLeft = useTransform(scrollYProgress, [0, 1], [-80, 40]);
+  const xRight = useTransform(scrollYProgress, [0, 1], [80, -40]);
 
   return (
-    <section id="contato" className="section-pad bg-grid" style={{ backgroundColor: "#050508", borderTop: "1px solid #111" }}>
+    <section id="contato" className="section-pad bg-grid" style={{ backgroundColor: "var(--bg-alt)", borderTop: "1px solid var(--border-soft)" }}>
       <div className="container-inner">
         <motion.div
           variants={container}
@@ -57,8 +65,8 @@ export default function ContactSection() {
             04 / Contact
           </motion.p>
 
-          {/* Impact headline — "BUILD" in outline */}
-          <motion.div variants={fadeUp} style={{ marginBottom: "3.5rem" }}>
+          {/* Impact headline — lines drift horizontally with scroll */}
+          <motion.div ref={headlineRef} variants={fadeUp} style={{ marginBottom: "3.5rem" }}>
             <h2
               style={{
                 fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif",
@@ -68,41 +76,47 @@ export default function ContactSection() {
                 userSelect: "none",
               }}
             >
-              <span
+              <motion.span
                 style={{
+                  x: xLeft,
                   display: "block",
                   fontSize: "clamp(3rem, 9vw, 7rem)",
-                  color: "#e8e8e8",
+                  color: "var(--fg)",
+                  willChange: "transform",
                 }}
               >
                 LET'S
-              </span>
-              <span
+              </motion.span>
+              <motion.span
                 style={{
+                  x: xRight,
                   display: "block",
                   fontSize: "clamp(3rem, 9vw, 7rem)",
                   color: "transparent",
-                  WebkitTextStroke: "1.5px #FCF00A",
+                  WebkitTextStroke: "1.5px var(--accent-text)",
+                  willChange: "transform",
                 }}
               >
                 BUILD
-              </span>
-              <span
+              </motion.span>
+              <motion.span
                 style={{
+                  x: xLeft,
                   display: "block",
                   fontSize: "clamp(3rem, 9vw, 7rem)",
-                  color: "#e8e8e8",
+                  color: "var(--fg)",
+                  willChange: "transform",
                 }}
               >
                 SOMETHING?
-              </span>
+              </motion.span>
             </h2>
 
             <p
               style={{
                 fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                 fontSize: "0.62rem",
-                color: "#c8c8d0",
+                color: "var(--fg-muted)",
                 letterSpacing: "0.12em",
                 marginTop: "1.5rem",
                 textTransform: "uppercase",
@@ -119,7 +133,7 @@ export default function ContactSection() {
                 style={{
                   fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                   fontSize: "0.58rem",
-                  color: "#FCF00A",
+                  color: "var(--accent-text)",
                   letterSpacing: "0.14em",
                   marginBottom: "1.75rem",
                   textTransform: "uppercase",
@@ -146,18 +160,18 @@ export default function ContactSection() {
                       gap: "1.25rem",
                       textDecoration: "none",
                       padding: "1.1rem 0",
-                      borderBottom: "1px solid #111",
+                      borderBottom: "1px solid var(--border-soft)",
                       transition: "padding-left 200ms ease",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.paddingLeft = "0.5rem";
                       const lbl = e.currentTarget.querySelector<HTMLElement>(".lbl");
-                      if (lbl) lbl.style.color = "#FCF00A";
+                      if (lbl) lbl.style.color = "var(--accent-text)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.paddingLeft = "0";
                       const lbl = e.currentTarget.querySelector<HTMLElement>(".lbl");
-                      if (lbl) lbl.style.color = "#c8c8d0";
+                      if (lbl) lbl.style.color = "var(--fg-muted)";
                     }}
                   >
                     <span
@@ -166,7 +180,7 @@ export default function ContactSection() {
                         display: "flex",
                         alignItems: "center",
                         gap: "0.5rem",
-                        color: "#c8c8d0",
+                        color: "var(--fg-muted)",
                         minWidth: 110,
                         transition: "color 150ms ease",
                       }}
@@ -186,7 +200,7 @@ export default function ContactSection() {
                         fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif",
                         fontWeight: 500,
                         fontSize: "0.9rem",
-                        color: "#e8e8e8",
+                        color: "var(--fg)",
                         letterSpacing: "-0.01em",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -206,7 +220,7 @@ export default function ContactSection() {
                 style={{
                   fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                   fontSize: "0.58rem",
-                  color: "#FCF00A",
+                  color: "var(--accent-text)",
                   letterSpacing: "0.14em",
                   marginBottom: "1.75rem",
                   textTransform: "uppercase",
@@ -219,16 +233,16 @@ export default function ContactSection() {
                 <div
                   style={{
                     padding: "2.5rem",
-                    border: "1px solid #FCF00A",
+                    border: "1px solid var(--accent)",
                     textAlign: "center",
-                    background: "rgba(204,34,34,0.03)",
+                    background: "color-mix(in srgb, var(--accent) 4%, transparent)",
                   }}
                 >
                   <p
                     style={{
                       fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif",
                       fontWeight: 700,
-                      color: "#e8e8e8",
+                      color: "var(--fg)",
                       letterSpacing: "-0.02em",
                       fontSize: "1.1rem",
                     }}
@@ -239,7 +253,7 @@ export default function ContactSection() {
                     style={{
                       fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                       fontSize: "0.62rem",
-                      color: "#444",
+                      color: "var(--fg-faint)",
                       marginTop: "0.5rem",
                       letterSpacing: "0.06em",
                     }}
@@ -262,15 +276,15 @@ export default function ContactSection() {
                       fontSize: "0.85rem",
                       letterSpacing: "0.08em",
                       color: "#060608",
-                      background: "#FCF00A",
+                      background: "var(--accent)",
                       border: "none",
                       padding: "1rem 2.25rem",
                       textTransform: "uppercase",
                       alignSelf: "flex-start",
                       transition: "background 160ms ease, transform 100ms ease",
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#e8e8e8"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "#FCF00A"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "var(--fg)"; e.currentTarget.style.color = "var(--bg)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "#060608"; }}
                     onMouseDown={(e) => { e.currentTarget.style.transform = "scale(0.97)"; }}
                     onMouseUp={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
                   >

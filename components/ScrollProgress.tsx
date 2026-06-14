@@ -10,7 +10,7 @@ export default function ScrollProgress() {
       style={{
         position: "fixed", top: 0, left: 0, right: 0,
         height: 2,
-        background: "#FCF00A",
+        background: "var(--accent-text)",
         transformOrigin: "0%",
         scaleX: scrollYProgress,
         zIndex: 9999,

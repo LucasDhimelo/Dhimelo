@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import DesignItem from "./DesignItem";
 import Lightbox from "./Lightbox";
 
@@ -16,21 +16,29 @@ const ITEMS = [
   { src: "/design/cha.png", alt: "Cha", title: "Cha" },
 ];
 
-const container: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
+const COLS = 4;
 
 export default function DesignSection() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  // Each column drifts at a different speed while the gallery scrolls through
+  const { scrollYProgress } = useScroll({
+    target: galleryRef,
+    offset: ["start end", "end start"],
+  });
+  const y0 = useTransform(scrollYProgress, [0, 1], [40, -60]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [-30, 70]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [60, -80]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  const columnY = [y0, y1, y2, y3];
+
+  const columns = Array.from({ length: COLS }, (_, c) =>
+    ITEMS.map((item, i) => ({ ...item, i })).filter((item) => item.i % COLS === c)
+  );
 
   return (
-    <section id="design" className="section-pad bg-grid" style={{ backgroundColor: "#060608", borderTop: "1px solid #111" }}>
+    <section id="design" className="section-pad bg-grid" style={{ backgroundColor: "var(--bg)", borderTop: "1px solid var(--border-soft)" }}>
       <div className="container-inner">
         <motion.p
           className="section-label"
@@ -52,20 +60,39 @@ export default function DesignSection() {
           Graphic Design
         </motion.h2>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          className="design-grid"
-          style={{ gap: "1px", background: "#FCF00A" }}
-        >
-          {ITEMS.map((d, i) => (
-            <motion.div key={d.src} variants={item} style={{ backgroundColor: "#060608" }}>
-              <DesignItem {...d} index={i} onClick={() => setLightboxIndex(i)} />
+        <div ref={galleryRef} className="design-cols">
+          {columns.map((col, c) => (
+            <motion.div
+              key={c}
+              style={{
+                y: columnY[c],
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.25rem",
+                paddingTop: c % 2 === 1 ? "3.5rem" : 0,
+                willChange: "transform",
+              }}
+            >
+              {col.map((d) => (
+                <motion.div
+                  key={d.src}
+                  initial={{ opacity: 0, y: 48, clipPath: "inset(10% 0% 10% 0%)" }}
+                  whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <DesignItem
+                    src={d.src}
+                    alt={d.alt}
+                    title={d.title}
+                    index={d.i}
+                    onClick={() => setLightboxIndex(d.i)}
+                  />
+                </motion.div>
+              ))}
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -82,6 +109,3 @@ export default function DesignSection() {
     </section>
   );
 }
-
-
-

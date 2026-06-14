@@ -36,7 +36,7 @@ export default function CyclingText() {
             fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif",
             fontWeight: 600,
             fontSize: "clamp(1rem, 2.2vw, 1.35rem)",
-            color: "#FCF00A",
+            color: "var(--accent-text)",
             letterSpacing: "-0.02em",
             display: "block",
           }}

@@ -4,6 +4,7 @@ import "./globals.css";
 import Cursor from "@/components/Cursor";
 import ScrollProgress from "@/components/ScrollProgress";
 import NavBar from "@/components/NavBar";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -38,8 +39,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="pt-BR"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Apply saved theme before paint to avoid a flash; dark is the default */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.add("light")}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
+        <SmoothScroll />
         <div className="noise-overlay" aria-hidden="true" />
         <Cursor />
         <ScrollProgress />

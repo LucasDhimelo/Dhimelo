@@ -61,14 +61,14 @@ export default function Cursor() {
       <div ref={dotRef} aria-hidden="true" style={{
         position: "fixed", top: 0, left: 0,
         width: 6, height: 6, borderRadius: "50%",
-        background: "#FCF00A",
+        background: "var(--accent-text)",
         pointerEvents: "none", zIndex: 99999,
         willChange: "transform",
       }} />
       <div ref={ringRef} aria-hidden="true" style={{
         position: "fixed", top: 0, left: 0,
         width: 28, height: 28, borderRadius: "50%",
-        border: "1px solid #FCF00A",
+        border: "1px solid var(--accent-text)",
         pointerEvents: "none", zIndex: 99998,
         willChange: "transform", opacity: 0.45,
         transition: "width 180ms ease, height 180ms ease, opacity 180ms ease",
