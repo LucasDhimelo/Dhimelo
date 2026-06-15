@@ -44,7 +44,7 @@
   padding: 0;
 }
 
-html { scroll-behavior: smooth; background-color: var(--bg); }
+html { scroll-behavior: smooth; background-color: var(--bg); overflow-x: hidden; }
 
 /* ─── Lenis smooth scroll ─────────────────────────────── */
 html.lenis, html.lenis body { height: auto; }

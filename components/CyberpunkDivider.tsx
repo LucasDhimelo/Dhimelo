@@ -56,7 +56,7 @@ export default function CyberpunkDivider({ label = "SYS.TRANSFER", flip = false 
         style={{ position: "absolute", display: "block", overflow: "visible", pointerEvents: "none" }}
       >
         <defs>
-          <filter id={`glow-${uid}`} x="-30%" y="-200%" width="160%" height="500%">
+          <filter id={`glow-${uid}`} x="0%" y="-200%" width="100%" height="500%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
@@ -81,7 +81,7 @@ export default function CyberpunkDivider({ label = "SYS.TRANSFER", flip = false 
           }}
         >
           <defs>
-            <filter id={`gt-${uid}`} x="-10%" y="-100%" width="120%" height="400%">
+            <filter id={`gt-${uid}`} x="0%" y="-100%" width="100%" height="400%">
               <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b" />
               <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
@@ -122,7 +122,7 @@ export default function CyberpunkDivider({ label = "SYS.TRANSFER", flip = false 
           }}
         >
           <defs>
-            <filter id={`gb-${uid}`} x="-10%" y="-100%" width="120%" height="400%">
+            <filter id={`gb-${uid}`} x="0%" y="-100%" width="100%" height="400%">
               <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b" />
               <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
