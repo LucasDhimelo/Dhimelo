@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import ThemeToggle from "./ThemeToggle";
-
 const LINKS = [
   { label: "About", href: "#sobre" },
   { label: "Web Dev", href: "#web" },
@@ -91,12 +89,10 @@ export default function NavBar() {
                   {l.label}
                 </a>
               ))}
-              <ThemeToggle />
             </nav>
 
             {/* Mobile: theme toggle + hamburger */}
             <div className="nav-mobile-btn" style={{ alignItems: "center", gap: "1rem" }}>
-              <ThemeToggle />
               <button
                 onClick={() => setMenuOpen((o) => !o)}
                 aria-label={menuOpen ? "Close menu" : "Open menu"}

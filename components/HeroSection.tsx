@@ -58,13 +58,14 @@ export default function HeroSection() {
       onMouseLeave={() => { mx.set(0); my.set(0); }}
       style={{
         position: "relative",
-        minHeight: "100dvh",
+        height: "100dvh",
+        minHeight: "600px",
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
         justifyContent: "center",
         overflow: "hidden",
-        padding: "8rem 1.5rem 6rem",
+        padding: "6rem 1.5rem 4rem",
         backgroundColor: "var(--bg)",
       }}
       className="bg-grid"

@@ -41,14 +41,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        {/* Apply saved theme before paint to avoid a flash; dark is the default */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.add("light")}catch(e){}`,
-          }}
-        />
-      </head>
       <body>
         <SmoothScroll />
         <div className="noise-overlay" aria-hidden="true" />

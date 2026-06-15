@@ -23,27 +23,6 @@
   --grid-fade: rgba(6, 6, 8, 0.85);
 }
 
-html.light {
-  --bg: #f5f4ef;
-  --bg-alt: #eeede6;
-  --surface: #ffffff;
-  --surface-deep: #e7e6df;
-  --border: #d8d7cd;
-  --border-soft: #e1e0d8;
-  --border-strong: #bcbbb0;
-  --fg: #141416;
-  --fg-muted: #45454e;
-  --fg-faint: #8a8a92;
-  --accent: #e01b1b;
-  --accent-text: #c20000;
-  --accent-soft: rgba(194, 0, 0, 0.35);
-  --nav-bg: rgba(245, 244, 239, 0.92);
-  --outline-stroke: rgba(20, 20, 22, 0.35);
-  --ghost-stroke: rgba(194, 0, 0, 0.12);
-  --grid-major: rgba(194, 0, 0, 0.1);
-  --grid-minor: rgba(20, 20, 22, 0.05);
-  --grid-fade: rgba(245, 244, 239, 0.85);
-}
 
 @theme inline {
   --color-background: var(--bg);
@@ -102,7 +81,6 @@ a, button, [role="button"], input, textarea { cursor: none; }
   background-repeat: repeat;
 }
 
-html.light .noise-overlay { opacity: 0.04; }
 
 /* ─── Global cyberpunk grid — fixed parallax ──────────── */
 .bg-grid {
@@ -409,6 +387,36 @@ html.light .noise-overlay { opacity: 0.04; }
   .skill-cat-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem 2.5rem;
+  }
+}
+
+/* ─── Contact channel grid ────────────────────────────── */
+.channel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 540px) {
+  .channel-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .channel-grid { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+
+/* ─── Monitor UI — web dev section ───────────────────── */
+.monitor-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .monitor-layout {
+    grid-template-columns: 58fr 42fr;
+    gap: 3.5rem;
   }
 }
 

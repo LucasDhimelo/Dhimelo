@@ -4,18 +4,18 @@ import CyberpunkSkillMap from "@/components/CyberpunkSkillMap";
 import WebDevSection from "@/components/WebDevSection";
 import DesignSection from "@/components/DesignSection";
 import ContactSection from "@/components/ContactSection";
-import Marquee from "@/components/Marquee";
+import CyberpunkDivider from "@/components/CyberpunkDivider";
 
 export default function Home() {
   return (
     <main>
       <HeroSection />
-      <Marquee text="WEB DEVELOPER — GRAPHIC DESIGNER — BRANDING" />
+      <CyberpunkDivider label="SYS.TRANSFER" />
       <AboutSection />
       <CyberpunkSkillMap />
       <WebDevSection />
       <DesignSection />
-      <Marquee text="LET'S WORK TOGETHER" baseVelocity={-2.5} />
+      <CyberpunkDivider label="LET'S WORK TOGETHER" flip />
       <ContactSection />
 
       <footer
