@@ -4,12 +4,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import CountUp from "./CountUp";
-
-const SKILLS = [
-  "React", "Next.js", "TypeScript", "Node.js",
-  "Figma", "Photoshop", "Illustrator",
-  "Branding", "Motion Design", "HTML / CSS",
-];
+import GlitchText from "./GlitchText";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 36 },
@@ -118,9 +113,11 @@ export default function AboutSection() {
               </motion.p>
 
               <motion.h2 variants={fadeUp} className="section-title" style={{ marginBottom: "2rem" }}>
-                Who is
-                <br />
-                <span style={{ color: "var(--accent-text)" }}>Dhimelo</span>
+                <GlitchText intervalMs={2800} burstMs={700}>
+                  Who is
+                  <br />
+                  <span style={{ color: "var(--accent-text)" }}>Dhimelo</span>
+                </GlitchText>
               </motion.h2>
 
               <motion.p
@@ -144,7 +141,6 @@ export default function AboutSection() {
                   fontSize: "clamp(0.9rem, 1.6vw, 1rem)",
                   color: "var(--fg-muted)",
                   lineHeight: 1.85,
-                  marginBottom: "2.5rem",
                   maxWidth: 500,
                 }}
               >
@@ -152,15 +148,6 @@ export default function AboutSection() {
                 não são levados a sério. Sites que convertem, identidades que ficam
                 na cabeça, design que faz o negócio ser visto.
               </motion.p>
-
-              <motion.div
-                variants={fadeUp}
-                style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
-              >
-                {SKILLS.map((s) => (
-                  <span key={s} className="chip">{s}</span>
-                ))}
-              </motion.div>
             </div>
           </div>
 

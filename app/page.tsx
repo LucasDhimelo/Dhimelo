@@ -1,5 +1,6 @@
 ﻿import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import CyberpunkSkillMap from "@/components/CyberpunkSkillMap";
 import WebDevSection from "@/components/WebDevSection";
 import DesignSection from "@/components/DesignSection";
 import ContactSection from "@/components/ContactSection";
@@ -11,6 +12,7 @@ export default function Home() {
       <HeroSection />
       <Marquee text="WEB DEVELOPER — GRAPHIC DESIGNER — BRANDING" />
       <AboutSection />
+      <CyberpunkSkillMap />
       <WebDevSection />
       <DesignSection />
       <Marquee text="LET'S WORK TOGETHER" baseVelocity={-2.5} />

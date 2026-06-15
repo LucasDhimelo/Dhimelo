@@ -76,7 +76,7 @@ export default function Lightbox({ items, index, onClose, onPrev, onNext }: Prop
           style={{
             fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
             fontSize: "0.65rem",
-            color: "#FCF00A",
+            color: "#FF2A2A",
             letterSpacing: "0.1em",
           }}
         >
@@ -114,8 +114,8 @@ export default function Lightbox({ items, index, onClose, onPrev, onNext }: Prop
             transition: "border-color 150ms, color 150ms",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "#FCF00A";
-            e.currentTarget.style.color = "#FCF00A";
+            e.currentTarget.style.borderColor = "#FF2A2A";
+            e.currentTarget.style.color = "#FF2A2A";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = "#1a1a22";
@@ -190,8 +190,8 @@ export default function Lightbox({ items, index, onClose, onPrev, onNext }: Prop
             transition: "border-color 150ms, color 150ms",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "#FCF00A";
-            e.currentTarget.style.color = "#FCF00A";
+            e.currentTarget.style.borderColor = "#FF2A2A";
+            e.currentTarget.style.color = "#FF2A2A";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = "#1a1a22";

@@ -79,7 +79,7 @@ export default function DesignItem({ src, alt, title, index, onClick }: Props) {
               style={{
                 fontFamily: "var(--font-jetbrains), 'JetBrains Mono', monospace",
                 fontSize: "0.58rem",
-                color: "#FCF00A",
+                color: "#FF2A2A",
                 letterSpacing: "0.12em",
                 display: "block",
                 marginBottom: "0.3rem",
@@ -107,7 +107,7 @@ export default function DesignItem({ src, alt, title, index, onClick }: Props) {
           <span
             aria-hidden="true"
             style={{
-              color: "#FCF00A",
+              color: "#FF2A2A",
               fontSize: "1.1rem",
               lineHeight: 1,
               flexShrink: 0,

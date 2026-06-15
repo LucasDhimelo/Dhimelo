@@ -12,13 +12,13 @@
   --fg: #e8e8e8;
   --fg-muted: #c8c8d0;
   --fg-faint: #55556a;
-  --accent: #FCF00A;
-  --accent-text: #FCF00A;
-  --accent-soft: rgba(252, 240, 10, 0.3);
+  --accent: #FF2A2A;
+  --accent-text: #FF3D3D;
+  --accent-soft: rgba(255, 42, 42, 0.3);
   --nav-bg: rgba(6, 6, 8, 0.92);
   --outline-stroke: rgba(232, 232, 232, 0.35);
-  --ghost-stroke: rgba(252, 240, 10, 0.06);
-  --grid-major: rgba(252, 240, 10, 0.055);
+  --ghost-stroke: rgba(255, 42, 42, 0.06);
+  --grid-major: rgba(255, 42, 42, 0.055);
   --grid-minor: rgba(232, 232, 232, 0.022);
   --grid-fade: rgba(6, 6, 8, 0.85);
 }
@@ -34,13 +34,13 @@ html.light {
   --fg: #141416;
   --fg-muted: #45454e;
   --fg-faint: #8a8a92;
-  --accent: #ecd905;
-  --accent-text: #6e6700;
-  --accent-soft: rgba(110, 103, 0, 0.35);
+  --accent: #e01b1b;
+  --accent-text: #c20000;
+  --accent-soft: rgba(194, 0, 0, 0.35);
   --nav-bg: rgba(245, 244, 239, 0.92);
   --outline-stroke: rgba(20, 20, 22, 0.35);
-  --ghost-stroke: rgba(110, 103, 0, 0.12);
-  --grid-major: rgba(110, 103, 0, 0.1);
+  --ghost-stroke: rgba(194, 0, 0, 0.12);
+  --grid-major: rgba(194, 0, 0, 0.1);
   --grid-minor: rgba(20, 20, 22, 0.05);
   --grid-fade: rgba(245, 244, 239, 0.85);
 }
@@ -50,8 +50,8 @@ html.light {
   --color-foreground: var(--fg);
   --color-surface: var(--surface);
   --color-border: var(--border);
-  --color-accent: #FCF00A;
-  --color-accent-dark: #c4ba00;
+  --color-accent: #FF2A2A;
+  --color-accent-dark: #c41e1e;
   --color-cyan: #00D4FF;
   --color-muted: var(--fg-faint);
   --font-heading: var(--font-space-grotesk);
@@ -138,6 +138,84 @@ html.light .noise-overlay { opacity: 0.04; }
   animation: pulse-dot 1.8s ease-in-out infinite;
   vertical-align: middle;
   margin-right: 0.5rem;
+}
+
+/* ─── Glitch text — hero name + section titles ────────── */
+/* Hero uses pseudo-elements (single line); GlitchText component uses
+   stacked DOM layers (multi-line). Both share the same keyframes. */
+.glitch-name { position: relative; }
+
+.glitch-name::before,
+.glitch-name::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.glitch-name.is-glitching::before { color: #00D4FF; animation: glitch-shift-cyan 0.17s linear 4; }
+.glitch-name.is-glitching::after  { color: #FF2A2A; animation: glitch-shift-red  0.17s linear 4; }
+.glitch-name.is-glitching         { animation: glitch-skew 0.13s steps(2, end) 5; }
+
+/* Layered component variant */
+.glitch-text { position: relative; display: inline-block; }
+.glitch-text .glitch-base { display: inline-block; position: relative; }
+.glitch-text .glitch-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+.glitch-text .glitch-layer--cyan,
+.glitch-text .glitch-layer--cyan * { color: #00D4FF !important; }
+.glitch-text .glitch-layer--red,
+.glitch-text .glitch-layer--red  * { color: #FF2A2A !important; }
+
+.glitch-text.is-glitching .glitch-layer--cyan { animation: glitch-shift-cyan 0.17s linear 4; }
+.glitch-text.is-glitching .glitch-layer--red  { animation: glitch-shift-red  0.17s linear 4; }
+.glitch-text.is-glitching .glitch-base        { animation: glitch-skew 0.13s steps(2, end) 5; }
+
+/* One fast cycle — repeated for a constant, aggressive burst */
+@keyframes glitch-skew {
+  0%   { transform: translate(0) skewX(0deg);   opacity: 1;    }
+  20%  { transform: translate(-4px, 0) skewX(7deg);  opacity: 0.55; }
+  40%  { transform: translate(4px, 0) skewX(-5deg);  opacity: 1;    }
+  60%  { transform: translate(-3px, 0) skewX(4deg);  opacity: 0.7;  }
+  80%  { transform: translate(2px, 0) skewX(-2deg);  opacity: 1;    }
+  100% { transform: translate(0) skewX(0deg);   opacity: 1;    }
+}
+
+@keyframes glitch-shift-cyan {
+  0%   { opacity: 0.9;  transform: translate(-7px, 2px);  clip-path: inset(8%  0 60% 0); }
+  25%  { opacity: 0.85; transform: translate(-10px, -3px); clip-path: inset(55% 0 10% 0); }
+  50%  { opacity: 0.9;  transform: translate(-4px, 3px);  clip-path: inset(30% 0 42% 0); }
+  75%  { opacity: 0.8;  transform: translate(-9px, -1px); clip-path: inset(70% 0 6%  0); }
+  100% { opacity: 0.9;  transform: translate(-6px, 2px);  clip-path: inset(18% 0 50% 0); }
+}
+
+@keyframes glitch-shift-red {
+  0%   { opacity: 0.9;  transform: translate(7px, -2px);  clip-path: inset(58% 0 8%  0); }
+  25%  { opacity: 0.85; transform: translate(10px, 3px);  clip-path: inset(10% 0 55% 0); }
+  50%  { opacity: 0.9;  transform: translate(4px, -3px);  clip-path: inset(42% 0 30% 0); }
+  75%  { opacity: 0.8;  transform: translate(9px, 1px);   clip-path: inset(6%  0 70% 0); }
+  100% { opacity: 0.9;  transform: translate(6px, -2px);  clip-path: inset(50% 0 18% 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch-name.is-glitching,
+  .glitch-name.is-glitching::before,
+  .glitch-name.is-glitching::after,
+  .glitch-text.is-glitching .glitch-base,
+  .glitch-text.is-glitching .glitch-layer { animation: none; opacity: 0; }
 }
 
 /* ─── Section padding ─────────────────────────────────── */
@@ -245,7 +323,7 @@ html.light .noise-overlay { opacity: 0.04; }
 ::-webkit-scrollbar-thumb { background: var(--accent); }
 
 /* ─── Selection ───────────────────────────────────────── */
-::selection { background: #FCF00A; color: #060608; }
+::selection { background: #FF2A2A; color: #fff; }
 
 /* ─── About grid ──────────────────────────────────────── */
 .about-grid {
@@ -298,6 +376,40 @@ html.light .noise-overlay { opacity: 0.04; }
   .stack-card-grid { grid-template-columns: 11fr 9fr; min-height: 460px; }
   .stack-card-media { aspect-ratio: auto; }
   .stack-card-content { border-top: none !important; border-left: 1px solid var(--border); }
+}
+
+/* ─── Skill column glitch ─────────────────────────────── */
+.skill-col--glitch {
+  animation: col-glitch 0.42s steps(3, end) 1;
+}
+
+@keyframes col-glitch {
+  0%   { transform: translate(0, 0);       opacity: 1;    filter: none; }
+  15%  { transform: translate(-4px, 0);    opacity: 0.65; filter: hue-rotate(90deg) brightness(1.4); }
+  30%  { transform: translate(5px, -1px);  opacity: 0.9;  filter: none; }
+  45%  { transform: translate(-3px, 1px);  opacity: 0.55; filter: hue-rotate(-60deg) brightness(1.6); }
+  60%  { transform: translate(4px, 0);     opacity: 0.8;  filter: none; }
+  75%  { transform: translate(-2px, -1px); opacity: 0.7;  filter: hue-rotate(45deg); }
+  90%  { transform: translate(2px, 0);     opacity: 0.9;  filter: none; }
+  100% { transform: translate(0, 0);       opacity: 1;    filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-col--glitch { animation: none; }
+}
+
+/* ─── Skill category grid ─────────────────────────────── */
+.skill-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem 2rem;
+}
+
+@media (min-width: 900px) {
+  .skill-cat-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem 2.5rem;
+  }
 }
 
 /* ─── Footer grid ─────────────────────────────────────── */

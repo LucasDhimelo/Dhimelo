@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useMotionValue, useSpring, useScroll, useTransform, motion } from "framer-motion";
 import ParticleCanvas from "./ParticleCanvas";
 import CyclingText from "./CyclingText";
@@ -13,6 +13,26 @@ export default function HeroSection() {
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 45, damping: 18 });
   const sy = useSpring(my, { stiffness: 45, damping: 18 });
+
+  // Glitch the name every 5s; let the entrance reveal finish before allowing overflow
+  const [glitching, setGlitching] = useState(false);
+  const [entranceDone, setEntranceDone] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setEntranceDone(true), 1300);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let off: ReturnType<typeof setTimeout>;
+    const id = setInterval(() => {
+      setGlitching(true);
+      off = setTimeout(() => setGlitching(false), 700);
+    }, 2600);
+    return () => { clearInterval(id); clearTimeout(off); };
+  }, []);
 
   // Scroll-driven exit: content recedes and fades as the hero leaves the viewport
   const { scrollYProgress } = useScroll({
@@ -128,9 +148,11 @@ export default function HeroSection() {
           based in Brazil — available worldwide
         </motion.p>
 
-        {/* Name — staggered letter reveal */}
+        {/* Name — staggered letter reveal + periodic RGB-split glitch */}
         <h1
           aria-label={NAME}
+          data-text={NAME}
+          className={`glitch-name${glitching ? " is-glitching" : ""}`}
           style={{
             fontFamily: "var(--font-space-grotesk), 'Space Grotesk', sans-serif",
             fontWeight: 700,
@@ -140,7 +162,7 @@ export default function HeroSection() {
             color: "var(--fg)",
             userSelect: "none",
             display: "flex",
-            overflow: "hidden",
+            overflow: entranceDone ? "visible" : "hidden",
             paddingBottom: "0.08em",
           }}
         >
